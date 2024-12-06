@@ -1,4 +1,4 @@
-const baseUrl = "https://taxi-api-bahdbgddchbye7hu.canadacentral-01.azurewebsites.net";
+const baseUrl = "http://localhost:8080";
 const apiUrlUsers = `${baseUrl}/users`;
 const apiUrlMotoristas = `${baseUrl}/drivers`;
 const apiUrlCorridas = `${baseUrl}/corridas`;
@@ -328,22 +328,34 @@ async function obterRotaTomTom(origem, destino) {
   return data;
 }
 
+
 async function obterLocalizacaoIP() {
   try {
-    const response = await fetch("https://ip-api.com/json/");
+    // Usando a API com sua chave para obter a localização
+    const response = await fetch("https://geo.ipify.org/api/v2/country,city?apiKey=at_DM6H4u0nhYWvOgyly0sLUlhzJ0Vrt");
+
+    // Verifique se a resposta foi bem-sucedida
+    if (!response.ok) {
+      throw new Error("Falha na requisição: " + response.status);
+    }
+
     const data = await response.json();
 
-    if (data.status === "success") {
-      const { lat, lon } = data; // latitude e longitude
-      return [lat, lon];
+    // Verifique se as informações de localização estão disponíveis
+    if (data.location && data.location.lat && data.location.lng) {
+      // Retorna a latitude e longitude
+      return { lat: data.location.lat, lng: data.location.lng };
     } else {
-      throw new Error("Erro ao obter a localização: " + data.message);
+      // Se não encontrar, retorna valores padrão
+      return { lat: -23.66389, lng: -46.53833 };
     }
   } catch (error) {
-    console.error("Erro ao obter a localização por IP:", error);
-    return null;
+    console.error("Erro ao obter a localização:", error);
+    // Se houver erro, retorna valores padrão
+    return { lat: -23.66389, lng: -46.53833 };
   }
 }
+
 
 //Obtein localizacao do Uuario
 async function exibirMapaLocalizacao() {
