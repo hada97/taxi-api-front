@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciamento Corridas</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <div class="img-container">
+      <img src="tax.png" alt="Imagem de exemplo" />
+    </div>
+
+    <!-- Container acima do principal -->
+    <div class="top-container">
+      <h2>77 Taxi</h2>
+      <p>Seja bem-vindo ao sistema de gerenciamento de corridas.</p>
+    </div>
+
+    <!-- Container principal -->
+    <div class="container">
+      <div class="content">
+        <div class="form-container">
+          <h2>Usuários</h2>
+
+          <div id="UserList" class="resultList"></div>
+
+          <button id="btnListarUser">Listar Usuários</button>
+
+          <button id="toggleUserForm">Cadastrar Usuário</button>
+
+          <div id="cadastroUserFormContainer" class="hidden">
+            <form id="cadastroUserForm">
+              <input
+                type="text"
+                id="nomeUser"
+                placeholder="Nome"
+                maxlength="24"
+                required
+                oninput="this.value = this.value.toLowerCase()"
+              />
+
+              <input type="email" id="emailUser" placeholder="Email" required />
+              <input
+                type="text"
+                id="telefoneUser"
+                placeholder="DDD + Telefone"
+                maxlength="11"
+                pattern="\d{11}"
+                required
+              />
+              <button type="submit">Cadastrar</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <h2>Motoristas</h2>
+
+          <div id="motoristaList" class="resultList"></div>
+
+          <button id="btnListarMotorista">Listar Motoristas</button>
+
+          <input
+            type="number"
+            id="idCorridaConcluir"
+            class="inputCorrida"
+            placeholder="ID Corrida"
+            required
+          />
+          <button id="btnFinalizarCorrida">Finalizar Corrida</button>
+
+          <button id="toggleMotoristaForm">Cadastrar Motorista</button>
+
+          <div id="cadastroMotoristaFormContainer" class="hidden">
+            <form id="cadastroMotoristaForm">
+              <input
+                type="text"
+                id="nomeMotorista"
+                placeholder="Nome"
+                maxlength="24"
+                required
+                oninput="this.value = this.value.toLowerCase()"
+              />
+
+              <input
+                type="email"
+                id="emailMotorista"
+                placeholder="Email"
+                required
+              />
+              <input
+                type="text"
+                id="telefoneMotorista"
+                placeholder="DDD + Telefone"
+                maxlength="11"
+                pattern="\d{11}"
+                required
+              />
+              <input
+                type="text"
+                id="cnhMotorista"
+                placeholder="CNH"
+                maxlength="9"
+                pattern="\d{9}"
+                required
+              />
+
+              <input
+                type="text"
+                id="placaMotorista"
+                placeholder="Placa"
+                maxlength="7"
+                pattern="^[A-Za-z0-9]{7}$"
+                required
+                style="text-transform: uppercase"
+              />
+
+              <button type="submit">Cadastrar</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <h2>Corridas</h2>
+
+          <div id="corridaList" class="resultList"></div>
+
+          <button id="btnListarCorrida">Corridas em Andamento</button>
+
+          <button id="btnListarCorridaConcluidas">Corridas Concluídas</button>
+
+          <input
+            type="number"
+            id="idCorrida"
+            class="inputCorrida"
+            placeholder="ID Corrida"
+            required
+          />
+          <button id="btnDetalharCorrida">Detalhar Corrida</button>
+
+          <button id="toggleCorridaForm">Cadastrar Corrida</button>
+
+          <div id="cadastroCorridaFormContainer" class="hidden">
+            <form id="cadastroCorridaForm">
+              <input
+                type="number"
+                id="idUser"
+                placeholder="ID do Usuário"
+                required
+                max="99999"
+              />
+              <input
+                type="text"
+                id="origemCorrida"
+                placeholder="Origem"
+                required
+              />
+              <input
+                type="text"
+                id="destinoCorrida"
+                placeholder="Destino"
+                required
+              />
+              <button type="submit">Cadastrar Corrida</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <h2>Detalhes</h2>
+          <div id="detalhecorridaList" class="resultList"></div>
+          <div
+            id="map"
+            class="map-container"
+            style="height: 350px; width: 350px"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Container abaixo do principal -->
+    <div class="bottom-container">
+      <p>© 2024 77 Taxi - Todos os direitos reservados.</p>
+    </div>
+
+    <!-- Preloader -->
+    <div class="preloader hidden" id="preloader">
+      <div class="loader" id="loader"></div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </body>
+</html>

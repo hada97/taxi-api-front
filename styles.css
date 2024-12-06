@@ -1,0 +1,205 @@
+/* Corpo da página */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #e7e7e7; /* Fundo preto */
+  display: flex;
+  flex-direction: column; /* Organiza os elementos verticalmente */
+  justify-content: center; /* Centraliza o conteúdo na vertical */
+  align-items: center; /* Centraliza horizontalmente */
+  height: 100vh; /* Altura total da janela */
+  margin: 0;
+  padding: 0;
+}
+
+.img-container img {
+  max-width: 250px;
+  height: auto;
+  text-align: center;
+  justify-content: center; 
+}
+
+.img-container {
+  display: flex;
+  justify-content: center; /* Alinha horizontalmente */
+  align-items: center; /* Alinha verticalmente */
+  width: 100%;
+  background-color: #000000;
+  max-width: 1500px;
+  height: 150px;
+}
+
+.top-container {
+  justify-content: center; /* Alinha verticalmente os itens */
+  align-items: center; /* Alinha horizontalmente os itens */
+  width: 100%;
+  background-color: #f1c40f;
+  padding: 5px 0; /* Diminui a altura do container */
+  text-align: center;
+  font-size: 1.2em;
+  max-width: 1500px;
+  height: 100px;
+  flex-direction: column; /* Organiza os itens em uma coluna */
+}
+
+/* Estilos para o container abaixo */
+.bottom-container {
+  display: flex; /* Define o container como flex */
+  justify-content: center; /* Centraliza o conteúdo na horizontal */
+  align-items: center; /* Centraliza o conteúdo na vertical */
+  width: 100%;
+  background-color: #f1c40f;
+  padding: 5px 0; /* Diminui a altura do container */
+  text-align: center;
+  font-size: 1em;
+  max-width: 1500px;
+  max-height: 30px;
+}
+
+/* Container principal */
+.container {
+  background: #000000; /* Fundo branco para o container */
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  width: 100%; /* Largura adaptável ao tamanho da tela */
+  max-width: 1440px; /* Limita a largura máxima */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Alinha os itens no topo */
+  align-items: center; /* Centraliza os itens horizontalmente */
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0px;
+  width: 100%; /* Garante que ocupe toda a largura do container */
+  color: #eeeeee;
+}
+
+/* Container dos formulários */
+.form-container {
+  width: 48%; /* Largura do lado esquerdo (formulários) */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+h2 {
+  color: #000000;
+  font-size: 1.2em;
+}
+
+.form-container h2 {
+  color: #f1c40f;
+}
+
+/* Estilo dos formulários e botões */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input,
+button {
+  margin: 5px 0;
+  border: 1px solid #000000;
+  border-radius: 15px;
+  width: 80%; /* Ocupar toda a largura do container */
+  box-sizing: border-box;
+  height: 35px; /* Altura dos inputs e botões */
+  padding: 8px;
+}
+
+button {
+  background-color: #f1c40f; /* Cor amarela para os botões */
+  color: #000000; /* Texto preto nos botões */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: none;
+}
+
+button:hover {
+  background-color: #b4960c; /* Amarelo mais escuro no hover */
+}
+
+/* Preloader (animação de carregamento) */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(255, 255, 255); /* Fundo preto com transparência */
+  z-index: 100;
+}
+
+.loader {
+  border: 12px solid #efeee8;
+  border-top: 12px solid #f1c40f; /* Cor amarela para o preloader */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -60px;
+  margin-left: -60px;
+}
+
+.yellow-text {
+  color: #f1c40f;
+}
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* Esconder elementos */
+.hidden {
+  display: none;
+}
+
+/* Para inputs com fundo preto */
+input {
+  background-color: #ffffff; /* Fundo escuro para os inputs */
+  color: #000000; /* Texto branco nos inputs */
+}
+
+input::placeholder {
+  color: #6d6d6d; /* Placeholder branco */
+}
+
+/* Estilos para o mapa */
+#map {
+  height: 350px; /* Ajuste o tamanho conforme necessário */
+  width: 100%; /* O mapa ocupa toda a largura disponível */
+  border-radius: 15px; /* Bordas arredondadas */
+}
+
+
+.map-container {
+  width: 100%;
+  height: 400px; /* A mesma altura para o contêiner do mapa */
+  position: relative; /* Necessário para que o mapa se posicione corretamente */
+  margin-top: 8px;
+}
+
+
