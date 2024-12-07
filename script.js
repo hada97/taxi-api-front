@@ -373,7 +373,7 @@ async function exibirMapaLocalizacao() {
 
   L.marker(coordenadas)
     .addTo(map)
-    .bindPopup("Sua localização atual")
+    .bindPopup("Sua localização aprox.")
     .openPopup();
 }
 
