@@ -1,7 +1,7 @@
 /* Corpo da página */
 body {
   font-family: Arial, sans-serif;
-  background-color: #d6d6d6; 
+  background-color: #d6d6d6;
   display: flex;
   flex-direction: column; /* Organiza os elementos verticalmente */
   justify-content: center; /* Centraliza o conteúdo na vertical */
@@ -12,12 +12,11 @@ body {
 }
 
 .img-container img {
-  max-width: 150px;
+  max-width: 160px;
   height: auto;
   text-align: center;
-  justify-content: center; 
+  justify-content: center;
   margin-bottom: 15px;
-  
 }
 
 .img-container {
@@ -30,7 +29,6 @@ body {
   height: 120px;
   border-top-left-radius: 20px; /* Arredonda o canto superior esquerdo */
   border-top-right-radius: 20px; /* Arredonda o canto superior direito */
- 
 }
 
 .top-container {
@@ -59,7 +57,7 @@ body {
   max-width: 1500px;
   max-height: 30px;
   border-bottom-left-radius: 20px; /* Arredonda o canto inferior esquerdo */
-  border-bottom-right-radius: 20px; 
+  border-bottom-right-radius: 20px;
 }
 
 /* Container principal */
@@ -159,7 +157,6 @@ button:hover {
   color: #f1c40f;
 }
 
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -201,7 +198,6 @@ input::placeholder {
   border-radius: 15px; /* Bordas arredondadas */
 }
 
-
 .map-container {
   width: 100%;
   height: 400px; /* A mesma altura para o contêiner do mapa */
@@ -210,11 +206,50 @@ input::placeholder {
 }
 
 #slogan {
-  font-size: 22px;  /* Tamanho da fonte */
+  font-size: 22px; /* Tamanho da fonte */
   font-weight: bold; /* Deixar o texto em negrito */
   color: #f1c40f; /* Cor do texto (pode ser qualquer cor ou código hexadecimal) */
   text-align: center; /* Alinhar o texto no centro */
   margin-top: 10px; /* Espaço acima do slogan */
   font-family: Arial, sans-serif; /* Tipo de fonte */
   margin-right: 15px;
+}
+
+.buttons-container {
+  display: flex; /* Usado para alinhar os botões lado a lado */
+  justify-content: right; /* Alinha os botões ao centro */
+  margin-top: -40px;
+  max-height: 60px;
+}
+
+.btn {
+  width: 40px; /* Define a largura do botão */
+  height: 40px; /* Define a altura do botão para ser igual à largura */
+  font-size: 24px; /* Ajusta o tamanho do ícone */
+  cursor: pointer;
+  border: none;
+  border-radius: 50%; /* Torna o botão circular */
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.btn-light {
+  background-color: #f0f0f0; /* Fundo Branco */
+  color: black;
+}
+
+.btn-dark {
+  background-color: #333; /* Fundo Cinza Escuro */
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.8; /* Efeito de hover */
+}
+
+.btn i {
+  margin: 0; /* Remove margem do ícone */
 }
