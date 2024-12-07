@@ -1,7 +1,7 @@
 /* Corpo da página */
 body {
   font-family: Arial, sans-serif;
-  background-color: #e7e7e7; /* Fundo preto */
+  background-color: #d6d6d6; 
   display: flex;
   flex-direction: column; /* Organiza os elementos verticalmente */
   justify-content: center; /* Centraliza o conteúdo na vertical */
@@ -12,10 +12,12 @@ body {
 }
 
 .img-container img {
-  max-width: 250px;
+  max-width: 160px;
   height: auto;
   text-align: center;
   justify-content: center; 
+  margin-bottom: 15px;
+  
 }
 
 .img-container {
@@ -25,7 +27,10 @@ body {
   width: 100%;
   background-color: #000000;
   max-width: 1500px;
-  height: 150px;
+  height: 120px;
+  border-top-left-radius: 20px; /* Arredonda o canto superior esquerdo */
+  border-top-right-radius: 20px; /* Arredonda o canto superior direito */
+ 
 }
 
 .top-container {
@@ -53,6 +58,8 @@ body {
   font-size: 1em;
   max-width: 1500px;
   max-height: 30px;
+  border-bottom-left-radius: 20px; /* Arredonda o canto inferior esquerdo */
+  border-bottom-right-radius: 20px; 
 }
 
 /* Container principal */
@@ -202,4 +209,12 @@ input::placeholder {
   margin-top: 8px;
 }
 
-
+#slogan {
+  font-size: 22px;  /* Tamanho da fonte */
+  font-weight: bold; /* Deixar o texto em negrito */
+  color: #f1c40f; /* Cor do texto (pode ser qualquer cor ou código hexadecimal) */
+  text-align: center; /* Alinhar o texto no centro */
+  margin-top: 10px; /* Espaço acima do slogan */
+  font-family: Arial, sans-serif; /* Tipo de fonte */
+  margin-right: 15px;
+}
