@@ -512,12 +512,19 @@ document
 function toggleLoader(show) {
   const preloader = document.getElementById("preloader");
   const loader = document.getElementById("loader");
+  const carImage = document.getElementById("carImage");
 
   if (show) {
     preloader.style.display = "flex"; // Exibe o loader
     loader.style.display = "block"; // Exibe o loader animado
+    carImage.style.transition = "left 3s ease-out"; // Ativa a animação do carro
+    carImage.style.left = "90%"; // Move o carro para a direita
+    
   } else {
     preloader.style.display = "none"; // Esconde o loader
     loader.style.display = "none"; // Esconde a animação
+    carImage.style.transition = "none"; // Desativa a animação do carro
+    carImage.style.left = "0"; // Retorna o carro para a posição inicial
   }
 }
+
