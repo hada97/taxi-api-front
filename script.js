@@ -7,15 +7,6 @@ const apiUrlCorridasCONCLUIDAS = `${baseUrl}/corridas/concluidas`;
 const apiUrlCorridasCONCLUIR = `${baseUrl}/corridas/concluir`;
 var map; // Variável global para o mapa
 
-function toggleLoader(ativo) {
-  const loaderElement = document.getElementById("loader"); // Supondo que você tenha um elemento com id "loader"
-  if (ativo) {
-    loaderElement.classList.remove("hidden"); // Mostra o loader
-  } else {
-    loaderElement.classList.add("hidden"); // Esconde o loader
-  }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   // Alternar exibição do formulário de cadastro de usuário
   document
