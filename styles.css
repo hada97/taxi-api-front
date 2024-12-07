@@ -1,7 +1,7 @@
 /* Corpo da página */
 body {
   font-family: Arial, sans-serif;
-  background-color: #d6d6d6;
+  background-color: #808080;
   display: flex;
   flex-direction: column; /* Organiza os elementos verticalmente */
   justify-content: center; /* Centraliza o conteúdo na vertical */
