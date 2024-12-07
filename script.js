@@ -508,3 +508,18 @@ document
     // Chama a função finalizarCorrida passando o ID da corrida
     finalizarCorrida(corridaId);
   });
+
+
+// Função para mostrar ou esconder o loader
+function toggleLoader(show) {
+  const preloader = document.getElementById("preloader");
+  const loader = document.getElementById("loader");
+
+  if (show) {
+    preloader.style.display = "flex"; // Exibe o loader
+    loader.style.display = "block"; // Exibe o loader animado
+  } else {
+    preloader.style.display = "none"; // Esconde o loader
+    loader.style.display = "none"; // Esconde a animação
+  }
+}
