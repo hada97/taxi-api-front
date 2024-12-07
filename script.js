@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
+        toggleLoader(true); // Exibe o loader
         const response = await fetch(apiUrlUsers, {
           method: "POST",
           headers: {
@@ -74,7 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (error) {
         alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
-      }
+      } finally {
+      toggleLoader(false); // Esconde o loader
+    }
     });
 
   // Cadastro de Motorista
@@ -93,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
+        toggleLoader(true);
         const response = await fetch(apiUrlMotoristas, {
           method: "POST",
           headers: {
@@ -117,7 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (error) {
         alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
-      }
+      } finally {
+      toggleLoader(false); // Esconde o loader
+    }
     });
 
   // Cadastro de Corrida
@@ -134,6 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
+        toggleLoader(true);
         const response = await fetch(apiUrlCorridas, {
           method: "POST",
           headers: {
@@ -156,7 +163,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (error) {
         alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
-      }
+      } finally {
+      toggleLoader(false); // Esconde o loader
+    }
     });
 
   document
@@ -388,6 +397,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Definir a função detalharCorrida
 async function detalharCorrida(corridaId) {
   try {
+    toggleLoader(true);
     const corrida = await buscarCorrida(corridaId); // Buscando a corrida com o ID
 
     if (!corrida) {
@@ -461,12 +471,16 @@ async function detalharCorrida(corridaId) {
     }
   } catch (error) {
     console.error("Erro geral:", error);
+  } finally {
+    toggleLoader(false); // Esconde o loader
   }
 }
+
 
 // Função para finalizar a corrida
 async function finalizarCorrida(corridaId) {
   try {
+    toggleLoader(true); // Exibe o loader
     const response = await fetch(`${apiUrlCorridasCONCLUIR}/${corridaId}`, {
       method: "POST",
       headers: {
@@ -481,6 +495,8 @@ async function finalizarCorrida(corridaId) {
     }
   } catch (error) {
     alert("Ocorreu um erro ao tentar concluir a corrida: " + error.message);
+  } finally {
+    toggleLoader(false); // Esconde o loader
   }
 }
 
