@@ -1,4 +1,4 @@
-const baseUrl = "https://tax-docker-byaue6dfe3c0e0eq.canadacentral-01.azurewebsites.net";
+const baseUrl = "https://taxi-api-bahdbgddchbye7hu.canadacentral-01.azurewebsites.net";
 const apiUrlUsers = `${baseUrl}/users`;
 const apiUrlMotoristas = `${baseUrl}/drivers`;
 const apiUrlCorridas = `${baseUrl}/corridas`;
@@ -285,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Função para buscar corrida específica
 async function buscarCorrida(id) {
-  const response = await fetch(`http://localhost:8080/corridas/${id}`);
+  const response = await fetch(`${apiUrlCorridas}/${id}`);
   if (!response.ok) {
     throw new Error("Erro ao buscar a corrida");
   }
