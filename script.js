@@ -1,4 +1,5 @@
-const baseUrl = "https://tax-docker-byaue6dfe3c0e0eq.canadacentral-01.azurewebsites.net";
+const baseUrl =
+  "https://tax-docker-byaue6dfe3c0e0eq.canadacentral-01.azurewebsites.net";
 const apiUrlUsers = `${baseUrl}/users`;
 const apiUrlMotoristas = `${baseUrl}/drivers`;
 const apiUrlCorridas = `${baseUrl}/corridas`;
@@ -38,49 +39,47 @@ document.addEventListener("DOMContentLoaded", () => {
       formContainer.classList.toggle("hidden");
     });
 
-  
-// Cadastro de User
-document
-  .getElementById("cadastroUserForm")
-  .addEventListener("submit", async function (event) {
-    event.preventDefault();
-    const name = document.getElementById("nomeUser").value;
-    const email = document.getElementById("emailUser").value;
-    const phone = document.getElementById("telefoneUser").value;
+  // Cadastro de User
+  document
+    .getElementById("cadastroUserForm")
+    .addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const name = document.getElementById("nomeUser").value;
+      const email = document.getElementById("emailUser").value;
+      const phone = document.getElementById("telefoneUser").value;
 
-    if (!name || !email || !phone) {
-      return;
-    }
-
-    try {
-      toggleLoader(true); // Exibe o loader
-      const response = await fetch(apiUrlUsers, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-        }),
-      });
-
-      if (response.ok) {
-        listarUsers(); // Função para listar os usuários cadastrados
-        alert("Usuário cadastrado com sucesso!");
-        document.getElementById("cadastroUserForm").reset();
-      } else {
-        const data = await response.json();
-        alert("Erro: " + data.message);
+      if (!name || !email || !phone) {
+        return;
       }
-    } catch (error) {
-      alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
-    } finally {
-      toggleLoader(false); // Esconde o loader
-    }
-  });
 
+      try {
+        toggleLoader(true); // Exibe o loader
+        const response = await fetch(apiUrlUsers, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            phone,
+          }),
+        });
+
+        if (response.ok) {
+          listarUsers(); // Função para listar os usuários cadastrados
+          alert("Usuário cadastrado com sucesso!");
+          document.getElementById("cadastroUserForm").reset();
+        } else {
+          const data = await response.json();
+          alert("Erro: " + data.message);
+        }
+      } catch (error) {
+        alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
+      } finally {
+        toggleLoader(false); // Esconde o loader
+      }
+    });
 
   // Cadastro de Motorista
   document
@@ -124,8 +123,8 @@ document
       } catch (error) {
         alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
       } finally {
-      toggleLoader(false); // Esconde o loader
-    }
+        toggleLoader(false);
+      }
     });
 
   // Cadastro de Corrida
@@ -166,8 +165,8 @@ document
       } catch (error) {
         alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
       } finally {
-      toggleLoader(false); // Esconde o loader
-    }
+        toggleLoader(false);
+      }
     });
 
   document
@@ -175,12 +174,12 @@ document
     .addEventListener("click", listarUsers);
   async function listarUsers() {
     try {
-      toggleLoader(true); // Se você tiver uma função de loader, mostre o carregamento
+      toggleLoader(true);
       const response = await fetch(apiUrlUsers);
       const data = await response.json();
       console.log(data);
       const usuarioList = document.getElementById("UserList");
-      usuarioList.innerHTML = ""; // Limpa a lista antes de adicionar novos itens
+      usuarioList.innerHTML = ""; // Limpa a lista
 
       if (response.ok) {
         data.forEach((usuario) => {
@@ -196,7 +195,7 @@ document
     } catch (error) {
       alert("Ocorreu um erro ao tentar listar usuários: " + error.message);
     } finally {
-      toggleLoader(false); // Esconde o carregamento
+      toggleLoader(false);
     }
   }
 
@@ -279,7 +278,6 @@ document
     }
   }
 
-  // Exemplo de recarregar a página
   function recarregarPagina() {
     location.reload();
   }
@@ -297,7 +295,7 @@ async function buscarCorrida(id) {
 
 // Função para geocodificar (obter coordenadas)
 async function geocode(local) {
-  const apiKey = "FavFAG60A7v65P6j4vgAxOQ6qYATmwjf"; // Substitua pela sua chave do TomTom
+  const apiKey = "FavFAG60A7v65P6j4vgAxOQ6qYATmwjf";
   const url = `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(
     local
   )}.json?key=${apiKey}`;
@@ -330,34 +328,29 @@ async function obterRotaTomTom(origem, destino) {
   return data;
 }
 
-
 async function obterLocalizacaoIP() {
   try {
     // Usando a API com sua chave para obter a localização
-    const response = await fetch("https://geo.ipify.org/api/v2/country,city?apiKey=at_DM6H4u0nhYWvOgyly0sLUlhzJ0Vrt");
+    const response = await fetch(
+      "https://geo.ipify.org/api/v2/country,city?apiKey=at_DM6H4u0nhYWvOgyly0sLUlhzJ0Vrt"
+    );
 
-    // Verifique se a resposta foi bem-sucedida
     if (!response.ok) {
       throw new Error("Falha na requisição: " + response.status);
     }
 
     const data = await response.json();
 
-    // Verifique se as informações de localização estão disponíveis
     if (data.location && data.location.lat && data.location.lng) {
-      // Retorna a latitude e longitude
       return { lat: data.location.lat, lng: data.location.lng };
     } else {
-      // Se não encontrar, retorna valores padrão
       return { lat: -23.66389, lng: -46.53833 };
     }
   } catch (error) {
     console.error("Erro ao obter a localização:", error);
-    // Se houver erro, retorna valores padrão
     return { lat: -23.66389, lng: -46.53833 };
   }
 }
-
 
 //Obtein localizacao do Uuario
 async function exibirMapaLocalizacao() {
@@ -375,19 +368,17 @@ async function exibirMapaLocalizacao() {
 
   L.marker(coordenadas)
     .addTo(map)
-    .bindPopup("Sua localização aprox.")
+    .bindPopup("Approx. location")
     .openPopup();
 }
 
 //Chama a func pra exib o mapa inicial
 document.addEventListener("DOMContentLoaded", async () => {
   await exibirMapaLocalizacao();
-  // Exemplo de evento que altera o mapa para o da corrida
   document
     .getElementById("btnDetalharCorrida")
     .addEventListener("click", async function () {
       const corridaId = document.getElementById("idCorrida").value;
-      // Verifica se o ID da corrida está presente
       if (!corridaId) {
         alert("ID da corrida é necessário.");
         return;
@@ -396,11 +387,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 });
 
-// Definir a função detalharCorrida
 async function detalharCorrida(corridaId) {
   try {
     toggleLoader(true);
-    const corrida = await buscarCorrida(corridaId); // Buscando a corrida com o ID
+    const corrida = await buscarCorrida(corridaId);
 
     if (!corrida) {
       console.error("Corrida não encontrada.");
@@ -409,9 +399,7 @@ async function detalharCorrida(corridaId) {
 
     const origem = corrida.origem;
     const destino = corrida.destino;
-    const preco = parseFloat(corrida.preco).toFixed(2); // Formata o preço com 2 casas decimais
-
-    // Passo 2: Obter coordenadas de origem e destino
+    const preco = parseFloat(corrida.preco).toFixed(2);
     const origemCoordinates = await geocode(origem);
     const destinoCoordinates = await geocode(destino);
 
@@ -420,76 +408,81 @@ async function detalharCorrida(corridaId) {
       return;
     }
 
-    // Passo 3: Requisição da rota via API TomTom
     const routeData = await obterRotaTomTom(
       origemCoordinates,
       destinoCoordinates
     );
 
     if (routeData) {
-      // Limpar a lista de detalhes da corrida antes de exibir os novos dados
       const listContainer = document.getElementById("detalhecorridaList");
-      listContainer.innerHTML = ""; // Limpar todos os elementos dentro da div
+      listContainer.innerHTML = "";
 
-      // Acessando a distância corretamente dentro de 'summary'
       const distanceInMeters =
         routeData.routes[0].legs[0].summary.lengthInMeters;
 
-      // Convertendo a distância para quilômetros
       const distanceInKm = (distanceInMeters / 1000).toFixed(1);
 
-      // Criando a div para distância
       const divDistancia = document.createElement("div");
-      divDistancia.textContent = `Distância: ${distanceInKm} Km`;
+      divDistancia.textContent = `Distance: ${distanceInKm} Km`;
       listContainer.appendChild(divDistancia);
 
       const divPreco = document.createElement("div");
-      divPreco.textContent = `Preço: R$ ${preco}`;
+      divPreco.textContent = `Price: R$ ${preco}`;
       listContainer.appendChild(divPreco);
 
-      if (map) {
-        map.remove(); // Remove o mapa existente
+      const travelTimeInSeconds =
+        routeData.routes[0].legs[0].summary.travelTimeInSeconds;
+
+      const travelTimeInMinutes = travelTimeInSeconds / 60;
+
+      let timeDisplay;
+
+      if (travelTimeInMinutes >= 60) {
+        const hours = Math.floor(travelTimeInMinutes / 60);
+        const minutes = Math.round(travelTimeInMinutes % 60);
+        timeDisplay = `${hours}h ${minutes}min`;
+      } else {
+        timeDisplay = `${Math.round(travelTimeInMinutes)} min`;
       }
 
-      // Criar um novo mapa com as coordenadas de origem
+      const divTime = document.createElement("div");
+      divTime.textContent = `Time: ${timeDisplay}`;
+      listContainer.appendChild(divTime);
+
+      if (map) {
+        map.remove();
+      }
+
       map = L.map("map").setView(origemCoordinates, 12);
 
-      // Adiciona o tileLayer do OpenStreetMap
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      // Desenha a nova rota no mapa
       const routeCoordinates = routeData.routes[0].legs[0].points.map(
         (point) => [point.latitude, point.longitude]
       );
-
-      // Desenhando a rota no mapa
       L.polyline(routeCoordinates, { color: "blue", weight: 5 }).addTo(map);
-
-      // Ajusta o mapa para os limites da rota
       map.fitBounds(L.polyline(routeCoordinates).getBounds());
     }
   } catch (error) {
     console.error("Erro geral:", error);
   } finally {
-    toggleLoader(false); // Esconde o loader
+    toggleLoader(false);
   }
 }
-
 
 // Função para finalizar a corrida
 async function finalizarCorrida(corridaId) {
   try {
-    toggleLoader(true); // Exibe o loader
+    toggleLoader(true);
     const response = await fetch(`${apiUrlCorridasCONCLUIR}/${corridaId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
     });
-
     if (response.ok) {
       alert("Corrida concluída com sucesso!");
     } else {
@@ -498,7 +491,7 @@ async function finalizarCorrida(corridaId) {
   } catch (error) {
     alert("Ocorreu um erro ao tentar concluir a corrida: " + error.message);
   } finally {
-    toggleLoader(false); // Esconde o loader
+    toggleLoader(false);
   }
 }
 
@@ -508,16 +501,12 @@ document
   .addEventListener("click", function () {
     const corridaId = document.getElementById("idCorridaConcluir").value;
 
-    // Verifica se o ID da corrida está presente
     if (!corridaId) {
       alert("ID da corrida é necessário.");
       return;
     }
-
-    // Chama a função finalizarCorrida passando o ID da corrida
     finalizarCorrida(corridaId);
   });
-
 
 // Função para mostrar ou esconder o loader
 function toggleLoader(show) {
