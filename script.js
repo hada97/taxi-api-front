@@ -38,47 +38,49 @@ document.addEventListener("DOMContentLoaded", () => {
       formContainer.classList.toggle("hidden");
     });
 
-  // Cadastro de User
-  document
-    .getElementById("cadastroUserForm")
-    .addEventListener("submit", async function (event) {
-      event.preventDefault();
-      const name = document.getElementById("nomeUser").value;
-      const email = document.getElementById("emailUser").value;
-      const phone = document.getElementById("telefoneUser").value;
+  
+// Cadastro de User
+document
+  .getElementById("cadastroUserForm")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const name = document.getElementById("nomeUser").value;
+    const email = document.getElementById("emailUser").value;
+    const phone = document.getElementById("telefoneUser").value;
 
-      if (!name || !email || !phone) {
-        return;
+    if (!name || !email || !phone) {
+      return;
+    }
+
+    try {
+      toggleLoader(true); // Exibe o loader
+      const response = await fetch(apiUrlUsers, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+        }),
+      });
+
+      if (response.ok) {
+        listarUsers(); // Função para listar os usuários cadastrados
+        alert("Usuário cadastrado com sucesso!");
+        document.getElementById("cadastroUserForm").reset();
+      } else {
+        const data = await response.json();
+        alert("Erro: " + data.message);
       }
-
-      try {
-        toggleLoader(true); // Exibe o loader
-        const response = await fetch(apiUrlUsers, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            phone,
-          }),
-        });
-
-        if (response.ok) {
-          listarUsers(); // Função para listar os usuários cadastrados
-          alert("Usuário cadastrado com sucesso!");
-          document.getElementById("cadastroUserForm").reset();
-        } else {
-          const data = await response.json();
-          alert("Erro: " + data.message);
-        }
-      } catch (error) {
-        alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
-      } finally {
+    } catch (error) {
+      alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
+    } finally {
       toggleLoader(false); // Esconde o loader
     }
-    });
+  });
+
 
   // Cadastro de Motorista
   document
