@@ -12,7 +12,7 @@ body {
 }
 
 .img-container img {
-  max-width: 160px;
+  max-width: 150px;
   height: auto;
   text-align: center;
   justify-content: center; 
