@@ -68,14 +68,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (response.ok) {
           listarUsers(); // Função para listar os usuários cadastrados
-          alert("Usuário cadastrado com sucesso!");
+          alert("User successfully registered!");
           document.getElementById("cadastroUserForm").reset();
         } else {
           const data = await response.json();
           alert("Erro: " + data.message);
         }
       } catch (error) {
-        alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
+        alert("An error occurred while trying to register: " + error.message);
       } finally {
         toggleLoader(false); // Esconde o loader
       }
@@ -114,14 +114,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (response.ok) {
           listarMotoristas(); // Função para listar os motoristas cadastrados
-          alert("Motorista cadastrado com sucesso!");
+          alert("Driver successfully registered!");
           document.getElementById("cadastroMotoristaForm").reset();
         } else {
           const data = await response.json();
           alert("Erro: " + data.message);
         }
       } catch (error) {
-        alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
+        alert("An error occurred while trying to register: " + error.message);
       } finally {
         toggleLoader(false);
       }
@@ -156,14 +156,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (response.ok) {
           listarCorridas(); // Função para listar as corridas cadastradas
-          alert("Corrida cadastrada com sucesso!");
+          alert("Ride successfully registered!");
           document.getElementById("cadastroCorridaForm").reset();
         } else {
           const data = await response.json();
           alert("Erro: " + data.message);
         }
       } catch (error) {
-        alert("Ocorreu um erro ao tentar cadastrar: " + error.message);
+        alert("An error occurred while trying to register: " + error.message);
       } finally {
         toggleLoader(false);
       }
@@ -189,11 +189,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       } else {
         alert(
-          "Erro ao listar usuários: " + (data.message || "Erro inesperado")
+          "Error listing users: " + (data.message || "Erro inesperado")
         );
       }
     } catch (error) {
-      alert("Ocorreu um erro ao tentar listar usuários: " + error.message);
+      alert("An error occurred while trying to list: " + error.message);
     } finally {
       toggleLoader(false);
     }
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     } catch (error) {
-      alert("Ocorreu um erro ao tentar listar: " + error.message);
+      alert("An error occurred while trying to list: " + error.message);
     } finally {
       toggleLoader(false);
     }
@@ -240,12 +240,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         data.forEach((corrida) => {
           const div = document.createElement("div");
-          div.textContent = `Corrida ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`;
+          div.textContent = `Ride ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`;
           corridaList.appendChild(div);
         });
       }
     } catch (error) {
-      alert("Ocorreu um erro ao tentar listar: " + error.message);
+      alert("An error occurred while trying to list: " + error.message);
     } finally {
       toggleLoader(false);
     }
@@ -267,12 +267,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         data.forEach((corrida) => {
           const div = document.createElement("div");
-          div.textContent = `Corrida ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`;
+          div.textContent = `Ride ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`;
           corridaList.appendChild(div);
         });
       }
     } catch (error) {
-      alert("Ocorreu um erro ao tentar listar: " + error.message);
+      alert("An error occurred while trying to list: " + error.message);
     } finally {
       toggleLoader(false);
     }
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function buscarCorrida(id) {
   const response = await fetch(`${apiUrlCorridas}/${id}`);
   if (!response.ok) {
-    throw new Error("Erro ao buscar a corrida");
+    throw new Error("Error fetching the ride");
   }
   const corrida = await response.json();
   return corrida;
@@ -302,14 +302,14 @@ async function geocode(local) {
 
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error("Erro ao buscar coordenadas");
+    throw new Error("Error fetching coordinates");
   }
 
   const data = await response.json();
   if (data.results && data.results.length > 0) {
     return [data.results[0].position.lat, data.results[0].position.lon];
   } else {
-    console.error("Nenhum resultado encontrado para:", local);
+    console.error("No results found for: ", local);
     return null;
   }
 }
@@ -336,7 +336,7 @@ async function obterLocalizacaoIP() {
     );
 
     if (!response.ok) {
-      throw new Error("Falha na requisição: " + response.status);
+      throw new Error("Request failed: " + response.status);
     }
 
     const data = await response.json();
@@ -347,7 +347,7 @@ async function obterLocalizacaoIP() {
       return { lat: -23.66389, lng: -46.53833 };
     }
   } catch (error) {
-    console.error("Erro ao obter a localização:", error);
+    console.error("Error retrieving location:", error);
     return { lat: -23.66389, lng: -46.53833 };
   }
 }
@@ -356,7 +356,7 @@ async function obterLocalizacaoIP() {
 async function exibirMapaLocalizacao() {
   const coordenadas = await obterLocalizacaoIP();
   if (!coordenadas) {
-    alert("Não foi possível obter a localização.");
+    alert("Could not retrieve the location");
     return;
   }
   map = L.map("map").setView(coordenadas, 13);
@@ -380,13 +380,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     .addEventListener("click", async function () {
       const corridaId = document.getElementById("idCorrida").value;
       if (!corridaId) {
-        alert("ID da corrida é necessário.");
+        alert("Ride ID is required");
         return;
       }
       await detalharCorrida(corridaId);
     });
 });
 
+
+//Detalhar Corrida
 async function detalharCorrida(corridaId) {
   try {
     toggleLoader(true);
@@ -467,7 +469,7 @@ async function detalharCorrida(corridaId) {
       map.fitBounds(L.polyline(routeCoordinates).getBounds());
     }
   } catch (error) {
-    console.error("Erro geral:", error);
+    console.error("Erro:", error);
   } finally {
     toggleLoader(false);
   }
@@ -484,12 +486,12 @@ async function finalizarCorrida(corridaId) {
       },
     });
     if (response.ok) {
-      alert("Corrida concluída com sucesso!");
+      alert("Ride completed successfully!");
     } else {
-      alert("Não foi possível concluir a corrida.");
+      alert("Could not complete the ride");
     }
   } catch (error) {
-    alert("Ocorreu um erro ao tentar concluir a corrida: " + error.message);
+    alert("An error occurred while trying to complete the ride: " + error.message);
   } finally {
     toggleLoader(false);
   }
@@ -502,7 +504,7 @@ document
     const corridaId = document.getElementById("idCorridaConcluir").value;
 
     if (!corridaId) {
-      alert("ID da corrida é necessário.");
+      alert("Ride ID is required");
       return;
     }
     finalizarCorrida(corridaId);
@@ -523,8 +525,6 @@ function toggleLoader(show) {
   } else {
     preloader.style.display = "none"; // Esconde o loader
     loader.style.display = "none"; // Esconde a animação
-    carImage.style.transition = "none"; // Desativa a animação do carro
     carImage.style.left = "0"; // Retorna o carro para a posição inicial
   }
 }
-
