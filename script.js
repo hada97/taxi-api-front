@@ -1,5 +1,5 @@
 const baseUrl =
-  "https://taxi-docker-novo-djcscuapfpcvhkb6.canadacentral-01.azurewebsites.net";
+  "http://localhost:8080";
 const apiUrlUsers = `${baseUrl}/users`;
 const apiUrlMotoristas = `${baseUrl}/drivers`;
 const apiUrlCorridas = `${baseUrl}/corridas`;
@@ -67,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (response.ok) {
-          listarUsers(); // Função para listar os usuários cadastrados
           alert("User successfully registered!");
           document.getElementById("cadastroUserForm").reset();
         } else {
@@ -113,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (response.ok) {
-          listarMotoristas(); // Função para listar os motoristas cadastrados
           alert("Driver successfully registered!");
           document.getElementById("cadastroMotoristaForm").reset();
         } else {
@@ -155,7 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (response.ok) {
-          listarCorridas(); // Função para listar as corridas cadastradas
           alert("Ride successfully registered!");
           document.getElementById("cadastroCorridaForm").reset();
         } else {
@@ -169,114 +166,52 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-  document
-    .getElementById("btnListarUser")
-    .addEventListener("click", listarUsers);
-  async function listarUsers() {
-    try {
-      toggleLoader(true);
-      const response = await fetch(apiUrlUsers);
-      const data = await response.json();
-      console.log(data);
-      const usuarioList = document.getElementById("UserList");
-      usuarioList.innerHTML = ""; // Limpa a lista
-
-      if (response.ok) {
-        data.forEach((usuario) => {
-          const div = document.createElement("div");
-          div.textContent = `ID: ${usuario.id}, ${usuario.name}`;
-          usuarioList.appendChild(div);
-        });
-      } else {
-        alert(
-          "Error listing users: " + (data.message || "Erro inesperado")
-        );
-      }
-    } catch (error) {
-      alert("An error occurred while trying to list: " + error.message);
-    } finally {
-      toggleLoader(false);
-    }
-  }
-
-  // Listar drivers
+  // Listar motoristas
   document
     .getElementById("btnListarMotorista")
-    .addEventListener("click", listarMotoristas);
-  async function listarMotoristas() {
-    try {
-      toggleLoader(true);
-      const response = await fetch(apiUrlMotoristas, {});
-      const data = await response.json();
-      const motoristaList = document.getElementById("motoristaList");
-      motoristaList.innerHTML = "";
-      if (response.ok) {
-        data.forEach((motorista) => {
-          const div = document.createElement("div");
-          div.textContent = `${motorista.name}, Placa: ${motorista.placa}, ${motorista.status}`;
-          motoristaList.appendChild(div);
-        });
-      }
-    } catch (error) {
-      alert("An error occurred while trying to list: " + error.message);
-    } finally {
-      toggleLoader(false);
-    }
-  }
+    .addEventListener("click", () =>
+      listarItens(
+        apiUrlMotoristas,
+        document.getElementById("motoristaList"),
+        (motorista) =>
+          `${motorista.name}, Placa: ${motorista.placa}, ${motorista.status}`
+      )
+    );
 
-  // Listar corridas em ANDAMENTO
+  // Listar usuários
+  document
+    .getElementById("btnListarUser")
+    .addEventListener("click", () =>
+      listarItens(
+        apiUrlUsers,
+        document.getElementById("UserList"),
+        (usuario) => `ID: ${usuario.id}, ${usuario.name}`
+      )
+    );
+
+  // Listar corridas em andamento
   document
     .getElementById("btnListarCorrida")
-    .addEventListener("click", listarCorridas);
-  async function listarCorridas() {
-    try {
-      toggleLoader(true);
-      const response = await fetch(apiUrlCorridasANDAMENTO, {
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      const corridaList = document.getElementById("corridaList");
-      corridaList.innerHTML = "";
-      if (response.ok) {
-        data.forEach((corrida) => {
-          const div = document.createElement("div");
-          div.textContent = `Ride ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`;
-          corridaList.appendChild(div);
-        });
-      }
-    } catch (error) {
-      alert("An error occurred while trying to list: " + error.message);
-    } finally {
-      toggleLoader(false);
-    }
-  }
+    .addEventListener("click", () =>
+      listarItens(
+        apiUrlCorridasANDAMENTO,
+        document.getElementById("corridaList"),
+        (corrida) =>
+          `ID ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`
+      )
+    );
 
-  // Listar corridas em CONCLUIDAS
+  // Listar corridas em andamento
   document
     .getElementById("btnListarCorridaConcluidas")
-    .addEventListener("click", listarCorridasCon);
-  async function listarCorridasCon() {
-    try {
-      toggleLoader(true);
-      const response = await fetch(apiUrlCorridasCONCLUIDAS, {
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      const corridaList = document.getElementById("corridaList");
-      corridaList.innerHTML = "";
-      if (response.ok) {
-        data.forEach((corrida) => {
-          const div = document.createElement("div");
-          div.textContent = `Ride ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`;
-          corridaList.appendChild(div);
-        });
-      }
-    } catch (error) {
-      alert("An error occurred while trying to list: " + error.message);
-    } finally {
-      toggleLoader(false);
-    }
-  }
+    .addEventListener("click", () =>
+      listarItens(
+        apiUrlCorridasCONCLUIDAS,
+        document.getElementById("corridaList"),
+        (corrida) =>
+          `ID ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`
+      )
+    );
 
   function recarregarPagina() {
     location.reload();
@@ -366,10 +301,7 @@ async function exibirMapaLocalizacao() {
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
 
-  L.marker(coordenadas)
-    .addTo(map)
-    .bindPopup("Approx. location")
-    .openPopup();
+  L.marker(coordenadas).addTo(map).bindPopup("location").openPopup();
 }
 
 //Chama a func pra exib o mapa inicial
@@ -386,7 +318,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       await detalharCorrida(corridaId);
     });
 });
-
 
 //Detalhar Corrida
 async function detalharCorrida(corridaId) {
@@ -488,10 +419,10 @@ async function finalizarCorrida(corridaId) {
     if (response.ok) {
       alert("Ride completed successfully!");
     } else {
-      alert("Could not complete the ride");
+      alert("Não foi possível concluir a corrida.");
     }
   } catch (error) {
-    alert("An error occurred while trying to complete the ride: " + error.message);
+    alert("Ocorreu um erro ao tentar concluir a corrida: " + error.message);
   } finally {
     toggleLoader(false);
   }
@@ -521,10 +452,32 @@ function toggleLoader(show) {
     loader.style.display = "block"; // Exibe o loader animado
     carImage.style.transition = "left 3s ease-out"; // Ativa a animação do carro
     carImage.style.left = "90%"; // Move o carro para a direita
-    
   } else {
     preloader.style.display = "none"; // Esconde o loader
     loader.style.display = "none"; // Esconde a animação
+    carImage.style.transition = "none"; // Desativa a animação do carro
     carImage.style.left = "0"; // Retorna o carro para a posição inicial
+  }
+}
+
+// Função para buscar dados e renderizar a lista
+async function listarItens(apiUrl, elementoLista, formatoTexto) {
+  try {
+    toggleLoader(true);
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    elementoLista.innerHTML = ""; // Limpa a lista antes de adicionar os itens
+
+    if (response.ok) {
+      data.forEach((item) => {
+        const div = document.createElement("div");
+        div.textContent = formatoTexto(item);
+        elementoLista.appendChild(div);
+      });
+    }
+  } catch (error) {
+    alert("An error occurred while trying to list: " + error.message);
+  } finally {
+    toggleLoader(false);
   }
 }
