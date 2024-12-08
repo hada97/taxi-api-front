@@ -286,7 +286,7 @@ async function obterLocalizacaoIP() {
   }
 }
 
-// Cria mapa com as coordenadas
+//Criando mapa com localizacao
 async function exibirMapaLocalizacao() {
   const coordenadas = await obterLocalizacaoIP();
   if (!coordenadas) {
@@ -300,7 +300,10 @@ async function exibirMapaLocalizacao() {
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
 
-  L.marker(coordenadas).addTo(map).bindPopup("Aprox location").openPopup();
+  // Adiciona o pino somente se as coordenadas não forem as padrões (-23.5681, -46.6492)
+  if (coordenadas.lat !== -23.5681 || coordenadas.lng !== -46.6492) {
+    L.marker(coordenadas).addTo(map).bindPopup("Aprox location").openPopup();
+  }
 }
 
 //Chama a func pra exib o mapa inicial
