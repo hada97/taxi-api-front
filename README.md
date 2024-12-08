@@ -4,7 +4,7 @@
 
 Este projeto é o front-end para a API da [Taxi Api](https://github.com/hada97/taxi-api)
 
-[Swagger](https://tax-docker-byaue6dfe3c0e0eq.canadacentral-01.azurewebsites.net/swagger-ui/index.html)
+[Swagger](https://taxi-docker-novo-djcscuapfpcvhkb6.canadacentral-01.azurewebsites.net//swagger-ui/index.html)
 
 ## ⚙️ Funcionalidades
 
