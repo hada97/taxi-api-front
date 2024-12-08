@@ -281,7 +281,7 @@ async function obterLocalizacaoIP() {
       lng: data.location?.longitude || -46.6492,
     };
   } catch (error) {
-    console.error("Returning default value for Avenida Paulista", error);
+    console.error("Error retrieving location:", error);
     return { lat: -23.5681, lng: -46.6492 }; // coordenadas padrão em caso de erro
   }
 }
