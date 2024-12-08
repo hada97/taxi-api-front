@@ -331,10 +331,8 @@ async function detalharCorrida(corridaId) {
     const corrida = await buscarCorrida(corridaId);
 
     if (!corrida) {
-      console.error("Ride not found!");
       return;
     }
-
     const origem = corrida.origem;
     const destino = corrida.destino;
     const preco = parseFloat(corrida.preco).toFixed(2);
