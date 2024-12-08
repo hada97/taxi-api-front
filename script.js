@@ -218,16 +218,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Função para buscar corrida específica
-async function buscarCorrida(id) {
-  const response = await fetch(`${apiUrlCorridas}/${id}`);
-  if (!response.ok) {
-    throw new Error("Error fetching the ride");
-  }
-  const corrida = await response.json();
-  return corrida;
-}
-
 // Função para geocodificar (obter coordenadas)
 async function geocode(local) {
   const apiKey = "FavFAG60A7v65P6j4vgAxOQ6qYATmwjf";
@@ -321,6 +311,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 });
 
+// Função para buscar corrida específica
+async function buscarCorrida(id) {
+  const response = await fetch(`${apiUrlCorridas}/${id}`);
+
+   // Verifica se a resposta é 404 (Not Found)
+   if (response.status === 404) {
+    alert("Ride not found!");
+    return null;  // Retorna null ou outra indicação de que a corrida não foi encontrada
+  }
+  const corrida = await response.json();
+  return corrida;
+}
+
 //Detalhar Corrida
 async function detalharCorrida(corridaId) {
   try {
@@ -328,7 +331,7 @@ async function detalharCorrida(corridaId) {
     const corrida = await buscarCorrida(corridaId);
 
     if (!corrida) {
-      console.error("Corrida não encontrada.");
+      console.error("Ride not found!");
       return;
     }
 
