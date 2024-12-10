@@ -315,98 +315,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function buscarCorrida(id) {
   const response = await fetch(`${apiUrlCorridas}/${id}`);
 
-   // Verifica se a resposta é 404 (Not Found)
-   if (response.status === 404) {
+  // Verifica se a resposta é 404 (Not Found)
+  if (response.status === 404) {
     alert("Ride not found!");
-    return null;  // Retorna null ou outra indicação de que a corrida não foi encontrada
+    return null; // Retorna null ou outra indicação de que a corrida não foi encontrada
   }
   const corrida = await response.json();
   return corrida;
-}
-
-//Detalhar Corrida
-async function detalharCorrida(corridaId) {
-  try {
-    toggleLoader(true);
-    const corrida = await buscarCorrida(corridaId);
-
-    if (!corrida) {
-      return;
-    }
-    const origem = corrida.origem;
-    const destino = corrida.destino;
-    const preco = parseFloat(corrida.preco).toFixed(2);
-    const origemCoordinates = await geocode(origem);
-    const destinoCoordinates = await geocode(destino);
-
-    if (!origemCoordinates || !destinoCoordinates) {
-      console.error("Erro ao obter coordenadas.");
-      return;
-    }
-
-    const routeData = await obterRotaTomTom(
-      origemCoordinates,
-      destinoCoordinates
-    );
-
-    if (routeData) {
-      const listContainer = document.getElementById("detalhecorridaList");
-      listContainer.innerHTML = "";
-
-      const distanceInMeters =
-        routeData.routes[0].legs[0].summary.lengthInMeters;
-
-      const distanceInKm = (distanceInMeters / 1000).toFixed(1);
-
-      const divDistancia = document.createElement("div");
-      divDistancia.textContent = `Distance: ${distanceInKm} Km`;
-      listContainer.appendChild(divDistancia);
-
-      const divPreco = document.createElement("div");
-      divPreco.textContent = `Price: R$ ${preco}`;
-      listContainer.appendChild(divPreco);
-
-      const travelTimeInSeconds =
-        routeData.routes[0].legs[0].summary.travelTimeInSeconds;
-
-      const travelTimeInMinutes = travelTimeInSeconds / 60;
-
-      let timeDisplay;
-
-      if (travelTimeInMinutes >= 60) {
-        const hours = Math.floor(travelTimeInMinutes / 60);
-        const minutes = Math.round(travelTimeInMinutes % 60);
-        timeDisplay = `${hours}h ${minutes}min`;
-      } else {
-        timeDisplay = `${Math.round(travelTimeInMinutes)} min`;
-      }
-
-      const divTime = document.createElement("div");
-      divTime.textContent = `Time: ${timeDisplay}`;
-      listContainer.appendChild(divTime);
-
-      if (map) {
-        map.remove();
-      }
-
-      map = L.map("map").setView(origemCoordinates, 12);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      const routeCoordinates = routeData.routes[0].legs[0].points.map(
-        (point) => [point.latitude, point.longitude]
-      );
-      L.polyline(routeCoordinates, { color: "blue", weight: 5 }).addTo(map);
-      map.fitBounds(L.polyline(routeCoordinates).getBounds());
-    }
-  } catch (error) {
-    console.error("Erro:", error);
-  } finally {
-    toggleLoader(false);
-  }
 }
 
 // Função para finalizar a corrida
@@ -482,5 +397,114 @@ async function listarItens(apiUrl, elementoLista, formatoTexto) {
     alert("An error occurred while trying to list: " + error.message);
   } finally {
     toggleLoader(false);
+  }
+}
+
+//DETALHAR CORRIDA
+let cache = {
+  origem: null,
+  destino: null,
+  origemCoordinates: null,
+  destinoCoordinates: null,
+  routeData: null,
+};
+
+async function detalharCorrida(corridaId) {
+  try {
+    toggleLoader(true); // Exibe o carregamento enquanto a requisição é feita
+    const corrida = await buscarCorrida(corridaId);
+
+    if (!corrida) {
+      return;
+    }
+
+    const origem = corrida.origem;
+    const destino = corrida.destino;
+    const preco = parseFloat(corrida.preco).toFixed(2);
+
+    if (origem === cache.origem && destino === cache.destino) {
+      console.log("Dados em cache, usando coordenadas e rota existentes.");
+      // Se a origem e o destino forem iguais, usa as coordenadas e a rota do cache
+      var origemCoordinates = cache.origemCoordinates;
+      var destinoCoordinates = cache.destinoCoordinates;
+      var routeData = cache.routeData;
+    } else {
+      // Caso contrário, faz novas chamadas para obter as coordenadas e rota
+      origemCoordinates = await geocode(origem);
+      destinoCoordinates = await geocode(destino);
+
+      if (!origemCoordinates || !destinoCoordinates) {
+        console.error("Erro ao obter coordenadas.");
+        return;
+      }
+
+      routeData = await obterRotaTomTom(origemCoordinates, destinoCoordinates);
+
+      // Atualiza o cache com as novas coordenadas e rota
+      cache.origem = origem;
+      cache.destino = destino;
+      cache.origemCoordinates = origemCoordinates;
+      cache.destinoCoordinates = destinoCoordinates;
+      cache.routeData = routeData;
+    }
+
+    if (routeData) {
+      const listContainer = document.getElementById("detalhecorridaList");
+      listContainer.innerHTML = ""; // Limpa qualquer conteúdo anterior
+
+      // Converte a distância para quilômetros e exibe
+      const distanceInMeters =
+        routeData.routes[0].legs[0].summary.lengthInMeters;
+      const distanceInKm = (distanceInMeters / 1000).toFixed(1);
+      const divDistancia = document.createElement("div");
+      divDistancia.textContent = `Distance: ${distanceInKm} Km`;
+      listContainer.appendChild(divDistancia);
+
+      // Exibe o preço da corrida
+      const divPreco = document.createElement("div");
+      divPreco.textContent = `Price: R$ ${preco}`;
+      listContainer.appendChild(divPreco);
+
+      // Calcula o tempo de viagem e exibe
+      const travelTimeInSeconds =
+        routeData.routes[0].legs[0].summary.travelTimeInSeconds;
+      const travelTimeInMinutes = travelTimeInSeconds / 60;
+      let timeDisplay;
+
+      if (travelTimeInMinutes >= 60) {
+        const hours = Math.floor(travelTimeInMinutes / 60);
+        const minutes = Math.round(travelTimeInMinutes % 60);
+        timeDisplay = `${hours}h ${minutes}min`;
+      } else {
+        timeDisplay = `${Math.round(travelTimeInMinutes)} min`;
+      }
+
+      const divTime = document.createElement("div");
+      divTime.textContent = `Time: ${timeDisplay}`;
+      listContainer.appendChild(divTime);
+
+      if (map) {
+        map.remove(); // Remove o mapa anterior, se existir
+      }
+
+      map = L.map("map").setView(origemCoordinates, 12);
+
+      // Adiciona camada do OpenStreetMap
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      // Adiciona a rota ao mapa
+      const routeCoordinates = routeData.routes[0].legs[0].points.map(
+        (point) => [point.latitude, point.longitude]
+      );
+      L.polyline(routeCoordinates, { color: "blue", weight: 5 }).addTo(map);
+      map.fitBounds(L.polyline(routeCoordinates).getBounds());
+    }
+  } catch (error) {
+    console.error("Erro:", error);
+  } finally {
+    toggleLoader(false); // Desativa o carregamento após a execução
   }
 }
