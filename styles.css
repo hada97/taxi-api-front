@@ -12,9 +12,9 @@ body {
 
 .out-container {
   max-width: 1300px;
-  position: relative;  
-  justify-content: center;  /* Centraliza horizontalmente */
-  align-items: center;    
+  position: relative;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center;
 }
 
 #slogan {
@@ -92,7 +92,6 @@ body {
   border-bottom-right-radius: 15px;
 }
 
-/* Conteúdo */
 .content {
   display: flex;
   justify-content: space-between;
@@ -101,7 +100,6 @@ body {
   color: #eeeeee;
 }
 
-/* Formulários */
 .form-container {
   width: 60%;
   padding: 10px;
@@ -146,7 +144,6 @@ button:hover {
   background-color: #b4960c;
 }
 
-/* Mapa */
 #map {
   width: 100%;
   min-width: 256px;
@@ -160,7 +157,6 @@ button:hover {
   max-height: 100%;
 }
 
-/* Botões */
 .buttons-container {
   display: flex;
   justify-content: right;
@@ -200,32 +196,25 @@ button:hover {
   margin: 0;
 }
 
-/* Preloader */
 .preloader {
-  position: absolute;       /* Para sobrepor o conteúdo */
-  top: 50%;                 /* Centraliza verticalmente */
-  left: 50%;                /* Centraliza horizontalmente */
-  transform: translate(-50%, -50%); /* Ajuste para centralizar perfeitamente */
-  width: 100%;              /* Largura total do contêiner (opcional) */
-  height: 100%;             /* Altura total do contêiner (opcional) */
-  display: flex;            /* Usado para alinhar o loader centralizado */
-  justify-content: center;  /* Centraliza o conteúdo horizontalmente */
-  align-items: center;      /* Centraliza o conteúdo verticalmente */
-  z-index: 1000;            /* Garante que o loader esteja acima de outros elementos */
+  position: fixed; /* Usa fixed para garantir que o loader fique fixo na tela */
+  top: 0; /* Garantir que o contêiner ocupe toda a tela */
+  left: 0; /* Garantir que o contêiner ocupe toda a tela */
+  width: 100vw; /* Largura total da tela */
+  height: 100vh; /* Altura total da tela */
+  display: flex; /* Usado para centralizar o loader */
+  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+  align-items: center; /* Centraliza o conteúdo verticalmente */
+  z-index: 1000; /* Garante que o loader esteja acima de outros elementos */
 }
 
 .loader {
   border: 12px solid transparent;
-  border-top: 8px solid #dfdfdf; /* Cor amarela para o preloader */
+  border-top: 8px solid #dfdfdf;
   border-radius: 50%;
   width: 50px;
   height: 50px;
   animation: spin 2s linear infinite;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -100px;
-  margin-left: -45px;
 }
 
 .yellow-text {
@@ -251,12 +240,10 @@ button:hover {
   }
 }
 
-/* Esconder elementos */
 .hidden {
   display: none;
 }
 
-/* Inputs */
 input {
   background-color: #ffffff;
   color: #000000;
@@ -268,24 +255,21 @@ input::placeholder {
 
 /* Responsividade */
 @media screen and (max-width: 768px) {
-  .img-container img {
-    max-width: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+  .img-container {
+    display: none; /* Oculta o top-container em dispositivos móveis */
+    padding: 10px 0;
+    height: auto;
   }
 
-  #slogan {
-    font-size: 18px;
-    margin-right: 0;
+  .top-container {
+    padding: 10px 0;
+    height: auto;
   }
 
   .form-container {
     width: 100%;
     margin-bottom: 10px;
-  }
-
-  .img-container {
-    height: 200px;
+    margin-top: 10px;
   }
 
   .buttons-container {
@@ -309,24 +293,25 @@ input::placeholder {
   }
 
   #map {
-    height: 200px;
+    width: 80%; /* Ajuste a largura para 80% da tela */
+    max-width: 300px; /* Limite a largura máxima para 300 */
+    height: auto;
   }
 }
 
 @media screen and (max-width: 480px) {
-  #slogan {
-    font-size: 16px;
-  }
-
   .form-container h2 {
     font-size: 1em;
   }
 
   #map {
-    height: 150px;
+    width: 80%; /* Ajuste a largura para 90% da tela */
+    max-width: 200px; /* Limite a largura máxima para 400px */
+    height: auto;
   }
 
   .top-container {
+    display: none; /* Também oculta o top-container em telas menores */
     padding: 10px 0;
     height: auto;
   }

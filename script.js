@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
         apiUrlMotoristas,
         document.getElementById("motoristaList"),
         (motorista) =>
-          `${motorista.name}, Placa: ${motorista.placa}, ${motorista.status}`
+          `${motorista.name}, CAR: ${motorista.placa}, ${motorista.status}`
       )
     );
 
@@ -190,26 +190,33 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
   // Listar corridas em andamento
-  document
-    .getElementById("btnListarCorrida")
-    .addEventListener("click", () =>
-      listarItens(
-        apiUrlCorridasANDAMENTO,
-        document.getElementById("corridaList"),
-        (corrida) =>
-          `ID ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`
-      )
-    );
+  document.getElementById("btnListarCorrida").addEventListener("click", () =>
+    listarItens(
+      apiUrlCorridasANDAMENTO,
+      document.getElementById("corridaList"),
+      (corrida) => {
+        let status =
+          corrida.status === "INPROGRESS"
+            ? corrida.status.substring(0, 6)
+            : corrida.status;
+        return `ID ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${status}`;
+      }
+    )
+  );
 
-  // Listar corridas em andamento
+  // Listar corridas em concluídas
   document
     .getElementById("btnListarCorridaConcluidas")
     .addEventListener("click", () =>
       listarItens(
         apiUrlCorridasCONCLUIDAS,
         document.getElementById("corridaList"),
-        (corrida) =>
-          `ID ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${corrida.status}`
+        (corrida) => {
+          // Verificar o status e substituir se for "COMPLETED"
+          let status = corrida.status === "COMPLETED" ? "DONE" : corrida.status;
+
+          return `ID ${corrida.id}, User ${corrida.user.id}, Driver ${corrida.driver.id}, ${status}`;
+        }
       )
     );
 
@@ -255,25 +262,21 @@ async function obterRotaTomTom(origem, destino) {
 
 // Obtém a localização do usuário
 async function obterLocalizacaoIP() {
-  try {
-    // Usando a API com sua chave para obter a localização
-    const response = await fetch(
-      "https://api.ipregistry.co/?key=ira_pHqksS9vwIlpdnsehzL4D0BRaHbToP4XxrEW"
-    );
+  // Usando a API para obter a localização
+  const response = await fetch(
+    "https://api.ipregistry.co/?key=ira_pHqksS9vwIlpdnsehzL4D0BRaHbToP4XxrEW"
+  );
 
-    if (!response.ok) throw new Error("Request failed: " + response.status);
+  // Verifica se a resposta não foi ok, retorna valores padrão
+  if (!response.ok) return { lat: -23.5681, lng: -46.6492 };
 
-    const data = await response.json();
+  const data = await response.json();
 
-    // Retorna as coordenadas ou valores padrão
-    return {
-      lat: data.location?.latitude || -23.5681,
-      lng: data.location?.longitude || -46.6492,
-    };
-  } catch (error) {
-    console.error("Error retrieving location:", error);
-    return { lat: -23.5681, lng: -46.6492 }; // coordenadas padrão em caso de erro
-  }
+  // Retorna as coordenadas ou valores padrão se não encontrados
+  return {
+    lat: data.location?.latitude || -23.5681,
+    lng: data.location?.longitude || -46.6492,
+  };
 }
 
 //Criando mapa com localizacao
@@ -314,8 +317,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Função para buscar corrida específica
 async function buscarCorrida(id) {
   const response = await fetch(`${apiUrlCorridas}/${id}`);
-
-  // Verifica se a resposta é 404 (Not Found)
   if (response.status === 404) {
     alert("Ride not found!");
     return null; // Retorna null ou outra indicação de que a corrida não foi encontrada
@@ -384,7 +385,7 @@ async function listarItens(apiUrl, elementoLista, formatoTexto) {
     toggleLoader(true);
     const response = await fetch(apiUrl);
     const data = await response.json();
-    elementoLista.innerHTML = ""; // Limpa a lista antes de adicionar os itens
+    elementoLista.innerHTML = ""; // Limpa a lista antes de adicionar
 
     if (response.ok) {
       data.forEach((item) => {
@@ -411,7 +412,7 @@ let cache = {
 
 async function detalharCorrida(corridaId) {
   try {
-    toggleLoader(true); // Exibe o carregamento enquanto a requisição é feita
+    toggleLoader(true);
     const corrida = await buscarCorrida(corridaId);
 
     if (!corrida) {
@@ -439,7 +440,6 @@ async function detalharCorrida(corridaId) {
       }
 
       routeData = await obterRotaTomTom(origemCoordinates, destinoCoordinates);
-
       // Atualiza o cache com as novas coordenadas e rota
       cache.origem = origem;
       cache.destino = destino;
@@ -505,6 +505,6 @@ async function detalharCorrida(corridaId) {
   } catch (error) {
     console.error("Erro:", error);
   } finally {
-    toggleLoader(false); // Desativa o carregamento após a execução
+    toggleLoader(false);
   }
 }
