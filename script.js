@@ -283,7 +283,7 @@ async function exibirMapaLocalizacao() {
     alert("Could not retrieve the location");
     return;
   }
-  map = L.map("map").setView(coordenadas, 13);
+  map = L.map("map").setView(coordenadas, 11);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
