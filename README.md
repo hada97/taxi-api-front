@@ -4,7 +4,7 @@
 
 Este projeto é o front-end para a API da [Taxi Api](https://github.com/hada97/taxi-api)
 
-[Swagger](https://taxi-docker-novo-djcscuapfpcvhkb6.canadacentral-01.azurewebsites.net//swagger-ui/index.html)
+[Swagger](https://taxi-doc-fbcybjaqesa0b7by.canadacentral-01.azurewebsites.net/swagger-ui/index.html#/)
 
 ## ⚙️ Funcionalidades
 - Cadastro de users, driver e corridas
@@ -21,6 +21,7 @@ Este projeto é o front-end para a API da [Taxi Api](https://github.com/hada97/t
 
 ## 📝 Licença
 Este projeto é licenciado sob a Licença MIT.
+
 
 
 
